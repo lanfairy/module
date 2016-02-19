@@ -60,48 +60,60 @@ static LKAppStartManager *_sharedSingleton = nil;
 
 
 /**
- *
+ * 1.首次启动显示默认的启动图片,显示引导界面
+ * 2.非首次启动加载广告界面
  */
 - (void)startManager
 {
-    // 1.启动过程界面
     
+    // 1设置根控制器
+    NSString *key = @"CFBundleVersion";
+    // 上一次的使用版本（存储在沙盒中的版本号）
+    NSString *lastVersion = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+    // 当前软件的版本号（从Info.plist中获得）
+    NSString *currentVersion = [NSBundle mainBundle].infoDictionary[key];
+    
+    if ([currentVersion isEqualToString:lastVersion])
+    {
+        // 版本号相同：这次打开和上次打开的是同一个版本
+        NSLog(@"无引导页,显示启动界面");
         if ([UIScreen mainScreen].bounds.size.width < 768.f) {
-    
+            
             _startupViewController = [[LKStartupViewController alloc] initWithNibName:@"LKStartupViewController_Iphone" bundle:[NSBundle mainBundle]];
-    
+            
         }
         else
             _startupViewController = [[LKStartupViewController alloc] initWithNibName:@"LKStartupViewController_Ipad" bundle:[NSBundle mainBundle]];
-//    NSAssert([[[UIApplication sharedApplication] delegate] window], @"警告:Before invoking startManager method, Window cannot be nil");
-    if (![[[UIApplication sharedApplication] delegate] window]) {
-        [NSException raise:@"LKAppStartManager" format:@"警告:Before invoking startManager method, Window cannot be nil"];
+        
+        UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
+        if (!window) {
+            [NSException raise:@"LKAppStartManager" format:@"警告:Before invoking startManager method, Window cannot be nil"];
+        }
+        window.rootViewController = _startupViewController;
+        
     }
-        [[[UIApplication sharedApplication] delegate] window].rootViewController = _startupViewController;
-    
-    
+    else { // 这次打开的版本和上一次不一样，显示引导页
+        NSLog(@"有引导页");
+        LKGuideTheInterfaceViewController *guideTheInterfaceViewController;
+        if ([UIScreen mainScreen].bounds.size.width < 768.f) {
+            
+            guideTheInterfaceViewController = [[LKGuideTheInterfaceViewController alloc] initWithNibName:@"LKGuideTheInterfaceViewController_Iphone" bundle:[NSBundle mainBundle]];
+            
+        }
+        else
+            guideTheInterfaceViewController = [[LKGuideTheInterfaceViewController alloc] initWithNibName:@"LKGuideTheInterfaceViewController_Ipad" bundle:[NSBundle mainBundle]];
+        UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
+        if (!window) {
+            [NSException raise:@"LKStartupViewController" format:@"警告:Before invoking startManager method, Window cannot be nil"];
+        }
+        window.rootViewController = guideTheInterfaceViewController;
+        
+        // 将当前的版本号存进沙盒
+        [[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:key];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 
-    // 2.引导界面
-//    // 2.设置根控制器
-//    NSString *key = @"CFBundleVersion";
-//    // 上一次的使用版本（存储在沙盒中的版本号）
-//    NSString *lastVersion = [[NSUserDefaults standardUserDefaults] objectForKey:key];
-//    // 当前软件的版本号（从Info.plist中获得）
-//    NSString *currentVersion = [NSBundle mainBundle].infoDictionary[key];
-//    
-//    if ([currentVersion isEqualToString:lastVersion]) { // 版本号相同：这次打开和上次打开的是同一个版本
-//        
-//        }
-//        
-//        
-//    } else { // 这次打开的版本和上一次不一样，显示引导页
-//        self.window.rootViewController = [[GuidePageViewController alloc] init];
-//        
-//        // 将当前的版本号存进沙盒
-//        [[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:key];
-//        [[NSUserDefaults standardUserDefaults] synchronize];
-//    }
-
+   
     
 }
 

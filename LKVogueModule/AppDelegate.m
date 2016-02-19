@@ -25,16 +25,7 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
-//   LKStartupViewController *startupViewController = [LKAppStartManager sharedInstance].startupViewController;
-//    LKStartupViewController *startupViewController;
-//    if ([UIScreen mainScreen].bounds.size.width < 768.f) {
-//
-//        startupViewController = [[LKStartupViewController alloc] initWithNibName:@"LKStartupViewController_Iphone" bundle:[NSBundle mainBundle]];
-//
-//    }
-//    else
-//        startupViewController = [[LKStartupViewController alloc] initWithNibName:@"LKStartupViewController_Ipad" bundle:[NSBundle mainBundle]];
-//    self.window.rootViewController = startupViewController;
+
     
     [[LKAppStartManager sharedInstance] startManager];
     [self.window makeKeyAndVisible];
