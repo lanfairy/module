@@ -23,6 +23,28 @@
     // Do any additional setup after loading the view.
     
     
+//    // 1.背景图片
+//    UIImageView *bg = [[UIImageView alloc] init];
+//    bg.image = [UIImage imageNamed:@"Default"];
+//    bg.frame = self.view.bounds;
+//    [self.view addSubview:bg];
+//    
+//    // 2.广告图片(真实的广告图片应该要先下载广告图片)
+//    UIImageView *ad = [[UIImageView alloc] init];
+//    ad.image = [UIImage imageNamed:@"ad"];
+//    ad.width = 280;
+//    ad.height = 300;
+//    ad.centerX = self.view.width * 0.5;
+//    ad.y = 60;
+//    [self.view addSubview:ad];
+//    
+//    // 3.2s后调到下一个主界面
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        UIWindow *window = [UIApplication sharedApplication].keyWindow;
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"Main"];
+//    });
+//
     
     // 2.引导界面
     // 2.1设置根控制器
